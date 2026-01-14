@@ -25,6 +25,7 @@
                 this._symbol = value.ToUpper();
             }
         }
+        public String? ImageUrl { get; set; }
         public int SectorId { get; set; }
         public virtual Sector Sector { get; set; } = null!;
 

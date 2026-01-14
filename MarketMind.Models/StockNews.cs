@@ -21,6 +21,7 @@
         //TODO: Format constant for datetimes
         public DateTime PublishedOn { get; set; }
         public int StockId { get; set; }
+        public String? ImageUrl { get; set; }
         public Stock Stock { get; set; } = null!;
         public String AuthorId { get; set; } = null!;
         public virtual IdentityUser Author { get; set; } = null!;

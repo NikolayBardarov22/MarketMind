@@ -4,6 +4,7 @@ using MarketMind.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarketMind.Data.Migrations
 {
     [DbContext(typeof(MarketMindDbContext))]
-    partial class MarketMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260114164936_ImageUrlPropAddedToEntities")]
+    partial class ImageUrlPropAddedToEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
