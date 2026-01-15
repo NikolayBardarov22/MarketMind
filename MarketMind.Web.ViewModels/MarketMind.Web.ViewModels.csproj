@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MarketMind.Models\MarketMind.Data.Models.csproj" />
+    <ProjectReference Include="..\MarketMindGCommon\MarketMindGCommon.csproj" />
   </ItemGroup>
 
 </Project>

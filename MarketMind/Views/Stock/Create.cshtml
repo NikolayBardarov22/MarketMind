@@ -1,0 +1,58 @@
+﻿@using MarketMind.Web.ViewModels.Stock
+@model AddStockInputViewModel
+
+@{
+    ViewData["Title"] = "Add New Stock";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Create New Stock</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label">Stock Name</label>
+                        <input asp-for="Name" class="form-control" placeholder="e.g. Apple Inc." />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Symbol" class="form-label">Ticker Symbol</label>
+                        <input asp-for="Symbol" class="form-control" placeholder="e.g. AAPL" style="text-transform:uppercase" />
+                        <span asp-validation-for="Symbol" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ImageUrl" class="form-label">Logo URL (Optional)</label>
+                        <input asp-for="ImageUrl" class="form-control" placeholder="https://..." />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SectorId" class="form-label">Sector</label>
+                        <select asp-for="SectorId" class="form-select">
+                            @foreach (var sector in Model.Sectors)
+                            {
+                                <option value="@sector.Id">@sector.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="SectorId" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Create Stock</button>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
