@@ -16,17 +16,30 @@ namespace MarketMind.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            AddStockInputViewModel? model = new AddStockInputViewModel
+            try
             {
-                Sectors = await this.stockService.GetAllSectorsAsync()
-            };
+                String? isUserValid = this.GetUserId();
+                if (isUserValid != null)
+                {
+                    AddStockInputViewModel? model = new AddStockInputViewModel
+                    {
+                        Sectors = await this.stockService.GetAllSectorsAsync()
+                    };
 
-            return View(model);
+                    return View(model);
+                }
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return RedirectToAction("Index");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Create(AddStockInputViewModel model)
         {
-            var sectors = await this.stockService.GetAllSectorsAsync();
+            IEnumerable<StockSectorViewModel>? sectors = await this.stockService.GetAllSectorsAsync();
 
             if (!sectors.Any(s => s.Id == model.SectorId))
             {
@@ -41,8 +54,27 @@ namespace MarketMind.Controllers
 
             await this.stockService.CreateAsync(model);
 
-          
+
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> All()
+        {
+            String? userId = this.GetUserId();
+
+            if (userId != null)
+            {
+                IEnumerable<AllStocksViewModel> allStocks = await stockService.GetAllStocksAsync(userId);
+                return View(allStocks);
+            }
+            return View("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            return View();
         }
     }
 }

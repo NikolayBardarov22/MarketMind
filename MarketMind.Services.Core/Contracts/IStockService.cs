@@ -11,5 +11,7 @@ namespace MarketMind.Services.Core.Contracts
     {
         Task<IEnumerable<StockSectorViewModel?>> GetAllSectorsAsync();
         Task CreateAsync(AddStockInputViewModel model);
+        Task<IEnumerable<AllStocksViewModel>> GetAllStocksAsync(int stockId);
+
     }
 }

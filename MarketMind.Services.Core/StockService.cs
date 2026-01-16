@@ -46,5 +46,22 @@ namespace MarketMind.Services.Core
                 })
                 .ToArrayAsync();
         }
+
+        public async Task<IEnumerable<AllStocksViewModel>> GetAllStocksAsync(String? userId)
+        {
+            IEnumerable<AllStocksViewModel> allStocks =await  marketMindDbContext
+                .Stocks
+                .AsNoTracking()
+                .Select(s => new AllStocksViewModel()
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Symbol = s.Symbol,
+                    ImageUrl = s.ImageUrl,
+                    SectorId = s.SectorId
+                })
+                .ToArrayAsync();
+            return allStocks;
+        }
     }
 }
