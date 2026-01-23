@@ -1,0 +1,53 @@
+﻿@using MarketMind.Web.ViewModels.Stock
+@model IEnumerable<AllStocksViewModel>
+
+@{
+    ViewData["Title"] = "All Stocks";
+}
+
+<!-- Добавете този div с уникален клас -->
+<div class="all-stocks-page">
+
+    <h2 class="text-center my-4">@ViewData["Title"]</h2>
+
+    <div class="row justify-content-center">
+        @foreach (var stock in Model)
+        {
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card stock-card h-100">
+
+                    @if (!string.IsNullOrEmpty(stock.ImageUrl))
+                    {
+                        <img src="@stock.ImageUrl"
+                             class="stock-img"
+                             alt="@stock.Name">
+                    }
+                    else
+                    {
+                        <img src="~/images/no_image.jpg"
+                             class="stock-img"
+                             alt="No Image">
+                    }
+
+                    <div class="card-body text-center d-flex flex-column">
+                        <div>
+                            <div class="stock-title">@stock.Name</div>
+                            <div class="stock-symbol">@stock.Symbol</div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <a asp-controller="Stock"
+                               asp-action="Details"
+                               asp-route-id="@stock.Id"
+                               class="btn btn-outline-primary w-100 stock-details-btn">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+
+</div> 
