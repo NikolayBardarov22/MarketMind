@@ -1,0 +1,93 @@
+﻿@model MarketMind.Web.ViewModels.StockNews.AddStockNewsInputModel;
+
+@{
+    ViewData["Title"] = "Add New Article";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="add-news-container">
+            <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+            <form method="post" asp-action="Add">
+
+                @* Това е скритото поле, което пази ID-то на акцията. Потребителят не го вижда. *@
+                <input type="hidden" asp-for="StockId" />
+
+                <!-- Поле за Заглавие -->
+                <div class="form-group mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter article title...">
+                    <span asp-validation-for="Title" class="text-danger small"></span>
+                </div>
+
+                <!-- Поле за Съдържание -->
+                <div class="form-group mb-3">
+                    <label asp-for="Content" class="form-label"></label>
+                    <textarea asp-for="Content" class="form-control" rows="8" placeholder="Write your article content here..."></textarea>
+                    <span asp-validation-for="Content" class="text-danger small"></span>
+                </div>
+
+                <!-- Поле за Снимка (незадължително) -->
+                <div class="form-group mb-4">
+                    <label asp-for="ImageUrl" class="form-label"></label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="https://example.com/image.jpg">
+                    <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                </div>
+
+                <!-- Бутон за Изпращане -->
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary btn-lg submit-btn">
+                        <i class="fas fa-paper-plane"></i> Publish Article
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Секцията Scripts позволява да добавим JavaScript валидация само на тази страница *@
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@* CSS стиловете. Най-добре е да ги преместите във вашия wwwroot/css/site.css файл,
+   но за улеснение може да останат и тук. *@
+<style>
+    .add-news-container {
+        background-color: #ffffff;
+        padding: 2.5rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        margin-top: 2rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ced4da;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .form-control:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+    .submit-btn {
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 0.8rem 1.5rem;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+</style>
