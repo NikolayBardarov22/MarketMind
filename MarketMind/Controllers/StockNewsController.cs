@@ -74,5 +74,31 @@
             }
             return RedirectToAction("Details", "Stock", new { id = model.StockId });
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
+        {
+            StockNewsDetailsViewModel model = await this._stockNewsService.GetStockNewsDetailsByIdAsync(id);
+            if (model == null)
+                return NotFound();
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            EditStockNewsInputModel? model = await this._stockNewsService.GetStockNewsToEditByIdAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            String? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (model.AuthorId != currentUserId) return Unauthorized();
+
+            return View(model);
+        }
     }
 }

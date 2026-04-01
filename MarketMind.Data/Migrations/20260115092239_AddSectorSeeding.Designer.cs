@@ -4,6 +4,7 @@ using MarketMind.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarketMind.Data.Migrations
 {
     [DbContext(typeof(MarketMindDbContext))]
-    partial class MarketMindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260115092239_AddSectorSeeding")]
+    partial class AddSectorSeeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace MarketMind.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sectors", (string)null);
+                    b.ToTable("Sectors");
 
                     b.HasData(
                         new
@@ -130,7 +133,7 @@ namespace MarketMind.Data.Migrations
 
                     b.HasIndex("SectorId");
 
-                    b.ToTable("Stocks", (string)null);
+                    b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("MarketMind.Data.Models.StockAnalysis", b =>
@@ -170,7 +173,7 @@ namespace MarketMind.Data.Migrations
 
                     b.HasIndex("StockId");
 
-                    b.ToTable("StockAnalyses", (string)null);
+                    b.ToTable("StockAnalyses");
                 });
 
             modelBuilder.Entity("MarketMind.Data.Models.StockNews", b =>
@@ -212,7 +215,7 @@ namespace MarketMind.Data.Migrations
 
                     b.HasIndex("StockId");
 
-                    b.ToTable("StockNews", (string)null);
+                    b.ToTable("StockNews");
                 });
 
             modelBuilder.Entity("MarketMind.Data.Models.WatchlistItem", b =>
@@ -232,7 +235,7 @@ namespace MarketMind.Data.Migrations
 
                     b.HasIndex("StockId");
 
-                    b.ToTable("WatchlistItems", (string)null);
+                    b.ToTable("WatchlistItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

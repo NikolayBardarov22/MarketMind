@@ -12,7 +12,6 @@
         private String _symbol = null!;
         public int Id { get; set; }
 
-
         [MinLength(StockNameMinLength)]
         public String Name { get; set; } = null!;
 

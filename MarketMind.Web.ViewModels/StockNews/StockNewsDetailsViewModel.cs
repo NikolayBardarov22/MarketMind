@@ -1,14 +1,12 @@
-﻿namespace MarketMind.Data.Models
+﻿namespace MarketMind.Web.ViewModels.StockNews
 {
     using Microsoft.AspNetCore.Identity;
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using static MarketMind.Data.Common.EntityValidations.StockNewsEntityValidations;
-    public class StockNews
+    public class StockNewsDetailsViewModel
     {
         public int Id { get; set; }
         public String Title { get; set; } = null!;
@@ -16,8 +14,7 @@
         public DateTime PublishedOn { get; set; }
         public int StockId { get; set; }
         public String? ImageUrl { get; set; }
-        public Stock Stock { get; set; } = null!;
         public String AuthorId { get; set; } = null!;
-        public virtual IdentityUser Author { get; set; } = null!;
+        public String AuthorName { get; set; } = null!;
     }
 }

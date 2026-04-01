@@ -1,6 +1,8 @@
 namespace MarketMind
 {
     using MarketMind.Data;
+    using MarketMind.Services.Core;
+    using MarketMind.Services.Core.Contracts;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
    
@@ -19,8 +21,12 @@ namespace MarketMind
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            builder.Services.AddScoped<IStockService, StockService>();
+
+            builder.Services.AddScoped<IStockNewsService, StockNewsService>();
+
             builder.Services.AddDefaultIdentity<IdentityUser>(options
-                => options.SignIn.RequireConfirmedAccount = true)
+                => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<MarketMindDbContext>();
 
             builder.Services.AddControllersWithViews();

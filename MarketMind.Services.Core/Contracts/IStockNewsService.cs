@@ -12,6 +12,8 @@ namespace MarketMind.Services.Core.Contracts
     {
         Task<bool> StockExistAsync(int stockId);
         Task CreateStockNewsAsync(AddStockNewsInputModel model, String? authorId);
+        Task<StockNewsDetailsViewModel> GetStockNewsDetailsByIdAsync(int id);
+        Task<EditStockNewsInputModel> GetStockNewsToEditByIdAsync(int id);
 
     }
 }

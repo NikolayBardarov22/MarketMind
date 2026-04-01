@@ -11,31 +11,31 @@
 
             <form method="post" asp-action="Add">
 
-                @* Това е скритото поле, което пази ID-то на акцията. Потребителят не го вижда. *@
+           
                 <input type="hidden" asp-for="StockId" />
 
-                <!-- Поле за Заглавие -->
+                
                 <div class="form-group mb-3">
                     <label asp-for="Title" class="form-label"></label>
                     <input asp-for="Title" class="form-control" placeholder="Enter article title...">
                     <span asp-validation-for="Title" class="text-danger small"></span>
                 </div>
 
-                <!-- Поле за Съдържание -->
+            
                 <div class="form-group mb-3">
                     <label asp-for="Content" class="form-label"></label>
                     <textarea asp-for="Content" class="form-control" rows="8" placeholder="Write your article content here..."></textarea>
                     <span asp-validation-for="Content" class="text-danger small"></span>
                 </div>
 
-                <!-- Поле за Снимка (незадължително) -->
+              
                 <div class="form-group mb-4">
                     <label asp-for="ImageUrl" class="form-label"></label>
                     <input asp-for="ImageUrl" class="form-control" placeholder="https://example.com/image.jpg">
                     <span asp-validation-for="ImageUrl" class="text-danger small"></span>
                 </div>
 
-                <!-- Бутон за Изпращане -->
+               
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary btn-lg submit-btn">
                         <i class="fas fa-paper-plane"></i> Publish Article

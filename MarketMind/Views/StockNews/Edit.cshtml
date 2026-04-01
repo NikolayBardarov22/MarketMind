@@ -1,0 +1,95 @@
+﻿@model MarketMind.Web.ViewModels.StockNews.EditStockNewsInputModel
+
+@{
+    ViewData["Title"] = "Edit News Article";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb bg-transparent p-0">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-controller="Stock" asp-action="Details" asp-route-id="@Model.StockId">Stock Details</a></li>
+                    <li class="breadcrumb-item active">Edit News</li>
+                </ol>
+            </nav>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-warning text-dark py-3">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-edit me-2"></i> Edit News Article
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="StockId" />
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-bold"></label>
+                            <input asp-for="Title" class="form-control form-control-lg" placeholder="Enter a catchy title..." />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ImageUrl" class="form-label fw-bold"></label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                <input asp-for="ImageUrl" class="form-control" placeholder="https://example.com/image.jpg" />
+                            </div>
+                            <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Content" class="form-label fw-bold"></label>
+                            <textarea asp-for="Content" class="form-control" rows="10" placeholder="Write your news content here..."></textarea>
+                            <span asp-validation-for="Content" class="text-danger small"></span>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <a asp-controller="StockNews" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary px-4">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-warning btn-lg px-5 shadow-sm text-dark fw-bold">
+                                <i class="fas fa-save me-1"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <p class="text-center text-muted mt-3 small">
+                Last updated on: @DateTime.Now.ToString("dd MMM yyyy")
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .card-header {
+        border-radius: 12px 12px 0 0 !important;
+    }
+
+    .form-control:focus {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+    }
+
+    textarea.form-control {
+        resize: none;
+    }
+</style>

@@ -71,10 +71,27 @@ namespace MarketMind.Controllers
             return View("Index");
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            return View();
+            try
+            {
+                StockDetailsViewModel? model = await this.stockService.GetStockDetailsByIdAsync(id);
+
+                if (model == null)
+                {
+                    return NotFound();
+                }
+
+                return View(model);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

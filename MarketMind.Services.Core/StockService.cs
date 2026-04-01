@@ -49,7 +49,7 @@ namespace MarketMind.Services.Core
 
         public async Task<IEnumerable<AllStocksViewModel>> GetAllStocksAsync(String? userId)
         {
-            IEnumerable<AllStocksViewModel> allStocks =await  marketMindDbContext
+            IEnumerable<AllStocksViewModel> allStocks = await marketMindDbContext
                 .Stocks
                 .AsNoTracking()
                 .Select(s => new AllStocksViewModel()
@@ -62,6 +62,52 @@ namespace MarketMind.Services.Core
                 })
                 .ToArrayAsync();
             return allStocks;
+        }
+
+        public async Task<StockDetailsViewModel> GetStockDetailsByIdAsync(int stockId)
+        {
+            StockDetailsViewModel stockDetail = null;
+
+            Stock? stock = await this.marketMindDbContext
+                .Stocks
+                .Include(s => s.StockNews)
+                .ThenInclude(n => n.Author)
+                .Include(s => s.StockAnalysis)
+                .ThenInclude(a => a.Author)
+                .AsNoTracking()
+                 .AsSplitQuery()
+                .FirstOrDefaultAsync(s => s.Id == stockId);
+            if (stock == null) return null;
+
+            stockDetail = new StockDetailsViewModel()
+            {
+                Id = stock.Id,
+                Name = stock.Name,
+                Symbol = stock.Symbol,
+                ImageUrl = stock.ImageUrl,
+                SectorId = stock.SectorId,
+
+                StockNews = stock.StockNews.Select(n => new NewsInfoViewModel
+                {
+                    Id = n.Id,
+                    Title = n.Title,
+                    Content = n.Content,
+                    PublishedOn = n.PublishedOn,
+                    ImageUrl = n.ImageUrl,
+                    AuthorName = n.Author.UserName ?? "N/A"
+                }).ToArray(),
+
+                StockAnalysis = stock.StockAnalysis.Select(a => new AnalysisInfoViewModel()
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Content = a.Content,
+                    Recommendation = a.Recommendation,
+                    RiskLevel = a.RiskLevel,
+                    AuthorName = a.Author.UserName ?? "N/A"
+                }).ToArray()
+            };
+            return stockDetail;
         }
     }
 }

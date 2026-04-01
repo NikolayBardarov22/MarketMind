@@ -20,6 +20,7 @@
     <ProjectReference Include="..\MarketMind.Models\MarketMind.Data.Models.csproj" />
     <ProjectReference Include="..\MarketMind.Services.Core\MarketMind.Services.Core.csproj" />
     <ProjectReference Include="..\MarketMind.Web.ViewModels\MarketMind.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\MarketMindGCommon\MarketMindGCommon.csproj" />
   </ItemGroup>
 
 </Project>

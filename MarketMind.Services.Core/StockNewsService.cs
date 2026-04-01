@@ -38,6 +38,40 @@
             await marketMindDbContext.SaveChangesAsync();
         }
 
+        public async Task<StockNewsDetailsViewModel?> GetStockNewsDetailsByIdAsync(int id)
+        {
+            return await marketMindDbContext.StockNews
+                .Where(n => n.Id == id)
+                .AsNoTracking()
+                .Select(n => new StockNewsDetailsViewModel()
+                {
+                    Id = n.Id,
+                    Title = n.Title,
+                    Content = n.Content,
+                    PublishedOn = DateTime.UtcNow,
+                    StockId = n.StockId,
+                    ImageUrl = n.ImageUrl,
+                    AuthorId = n.AuthorId,
+                    AuthorName = n.Author.UserName ?? string.Empty,
+                }).FirstOrDefaultAsync();
+        }
+
+        public async Task<EditStockNewsInputModel?> GetStockNewsToEditByIdAsync(int id)
+        {
+            return await this.marketMindDbContext.StockNews
+                .Where(n => n.Id == id)
+                .AsNoTracking()
+                .Select(n => new EditStockNewsInputModel()
+                {
+                    Id = id,
+                    Title = n.Title,
+                    Content = n.Content,
+                    ImageUrl = n.ImageUrl,
+                    StockId = n.StockId,
+                    AuthorId = n.AuthorId
+                })
+                .FirstOrDefaultAsync();
+        }
 
         public async Task<bool> StockExistAsync(int stockId)
         {

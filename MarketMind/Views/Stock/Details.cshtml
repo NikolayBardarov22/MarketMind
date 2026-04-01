@@ -1,18 +1,20 @@
-﻿@model MarketMind.Web.ViewModels.Stock.StockDetailsViewModel
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+
+@model MarketMind.Web.ViewModels.Stock.StockDetailsViewModel
 
 @{
     ViewData["Title"] = Model.Name + " Details";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <div class="container stock-details-page">
 
-    <!-- === ГЛАВНА ИНФОРМАЦИЯ ЗА АКЦИЯТА === -->
     <div class="stock-header">
         <div class="stock-header-info">
-            <h1 class="display-4">@Model.Name</h1>
+            <h1 class="display-4 stock-name-accent">@Model.Name</h1>
             <p class="lead text-muted symbol-badge">@Model.Symbol</p>
         </div>
-
         @if (!string.IsNullOrEmpty(Model.ImageUrl))
         {
             <img src="@Model.ImageUrl" class="stock-header-img" alt="@Model.Name logo">
@@ -22,13 +24,10 @@
     <hr class="my-4" />
 
     <div class="row">
-        <!-- === КОЛОНА ЗА НОВИНИ === -->
         <div class="col-lg-7">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3>Latest News</h3>
-
-                @* Този бутон ще се вижда САМО ако потребителят е в роля "Admin" *@
-                @if (User.IsInRole("Admin"))
+                @if (User.Identity.IsAuthenticated)
                 {
                     <a asp-controller="StockNews" asp-action="Add" asp-route-stockId="@Model.Id" class="btn btn-sm btn-outline-primary">
                         <i class="fas fa-plus"></i> Add News
@@ -36,87 +35,71 @@
                 }
             </div>
 
-            @* Проверяваме дали има новини, преди да опитаме да ги покажем *@
             @if (Model.StockNews.Any())
             {
                 foreach (var newsItem in Model.StockNews.OrderByDescending(n => n.PublishedOn))
                 {
                     <div class="card mb-3 news-analysis-card">
                         <div class="card-body">
-                            <h5 class="card-title">@newsItem.Title</h5>
-                            <p class="card-text text-muted small">
-                                By @newsItem.AuthorName on @newsItem.PublishedOn.ToString("MMMM dd, yyyy")
-                            </p>
+                            <div class="d-flex justify-content-between align-items-start">
+                                
+                                <a asp-controller="StockNews" asp-action="Details" asp-route-id="@newsItem.Id" class="text-decoration-none text-dark">
+                                    <h5 class="card-title news-title-link">@newsItem.Title</h5>
+                                </a>
+
+                                @if (newsItem.AuthorId == currentUserId)
+                                {
+                                    <a asp-controller="StockNews" asp-action="Edit" asp-route-id="@newsItem.Id" class="btn btn-sm btn-outline-warning ms-2">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>
+                                }
+                            </div>
+                            <p class="card-text text-muted small">By @newsItem.AuthorName on @newsItem.PublishedOn.ToString("MMMM dd, yyyy")</p>
                             @if (!string.IsNullOrEmpty(newsItem.ImageUrl))
                             {
-                                <img src="@newsItem.ImageUrl" class="img-fluid rounded my-2 news-item-img" alt="News Image">
+                                <img src="@newsItem.ImageUrl" class="img-fluid rounded my-2" alt="News Image">
                             }
-                            <p class="card-text">@newsItem.Content</p>
+                            <p class="card-text">
+                                @(newsItem.Content.Length > 200 ? newsItem.Content.Substring(0, 200) + "..." : newsItem.Content)
+                            </p>
                         </div>
                     </div>
                 }
             }
             else
             {
-                <div class="alert alert-info">
-                    No news available for this stock at the moment.
-                </div>
+                <div class="alert alert-info">No news available for this stock at the moment.</div>
             }
         </div>
 
-        <!-- === КОЛОНА ЗА АНАЛИЗИ === -->
         <div class="col-lg-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3>Analysis</h3>
-
-                @* И този бутон е само за админи *@
-                @if (User.IsInRole("Admin"))
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-controller="StockAnalysis" asp-action="Add" asp-route-stockId="@Model.Id" class="btn btn-sm btn-outline-success">
+                    <a asp-controller="StockAnalysis" asp-action="Add" asp-route-stockId="@Model.Id" class="btn btn-sm btn-outline-primary">
                         <i class="fas fa-plus"></i> Add Analysis
                     </a>
                 }
             </div>
-
             @if (Model.StockAnalysis.Any())
             {
-                foreach (var analysisItem in Model.StockAnalysis)
+                @foreach (var analysisItem in Model.StockAnalysis)
                 {
-                    <div class="card mb-3 news-analysis-card">
-                        <div class="card-body">
-                            <h5 class="card-title">@analysisItem.Title</h5>
-                            <p class="card-text text-muted small">
-                                By @analysisItem.AuthorName
-                            </p>
-                            <p class="card-text">@analysisItem.Content</p>
-                            <hr />
-                            <div class="d-flex justify-content-between text-center">
-                                <div>
-                                    <small class="text-muted">Recommendation</small>
-                                    <span class="badge recommendation-badge bg-primary">@analysisItem.Recommendation.ToString()</span>
-                                </div>
-                                <div>
-                                    <small class="text-muted">Risk Level</small>
-                                    <span class="badge risk-level-badge bg-danger">@analysisItem.RiskLevel.ToString()</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card mb-3 news-analysis-card analysis-card">
                     </div>
                 }
             }
             else
             {
-                <div class="alert alert-info">
-                    No analysis available for this stock at the moment.
-                </div>
+                <div class="alert alert-info">No analysis available for this stock at the moment.</div>
             }
         </div>
     </div>
 </div>
 
-@* Този CSS може да го добавите тук за бърз тест или, още по-добре,
-   да го преместите във вашия wwwroot/css/site.css файл *@
 <style>
+
     .stock-header {
         display: flex;
         justify-content: space-between;
@@ -139,28 +122,34 @@
     }
 
     .news-analysis-card {
-        border-left: 4px solid #0d6efd; /* Син акцент за новини */
+        border-left: 4px solid #0d6efd;
         transition: box-shadow 0.2s ease-in-out;
     }
 
-    .col-lg-5 .news-analysis-card {
-        border-left-color: #198754; /* Зелен акцент за анализи */
+    .analysis-card {
+        border-left-color: #198754;
     }
 
     .news-analysis-card:hover {
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-    .news-item-img {
-        max-height: 250px;
-        width: 100%;
-        object-fit: cover;
-    }
-
     .recommendation-badge, .risk-level-badge {
         font-size: 0.9rem;
         font-weight: 500;
         padding: 0.5em 0.75em;
-        width: 80px; /* Фиксирана ширина за по-добро подравняване */
     }
+
+    .stock-name-accent {
+        font-weight: 700; 
+        color: #2c3e50; 
+    }
+
+    .news-title-link {
+        transition: color 0.2s ease-in-out;
+    }
+
+        .news-title-link:hover {
+            color: #0d6efd !important; 
+        }
 </style>

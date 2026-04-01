@@ -1,0 +1,36 @@
+﻿@model MarketMind.Web.ViewModels.StockNews.StockNewsDetailsViewModel
+@using System.Security.Claims
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">News Details</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1>@Model.Title</h1>
+            <p class="text-muted">By @Model.AuthorName on @Model.PublishedOn.ToString("f")</p>
+            <hr />
+
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" class="img-fluid rounded mb-3" alt="News Image">
+            }
+
+            <div class="news-content" style="white-space: pre-line;">
+                @Model.Content
+            </div>
+
+            <div class="mt-4">
+                @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.AuthorId)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Article</a>
+                }
+                <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+            </div>
+        </div>
+    </div>
+</div>
